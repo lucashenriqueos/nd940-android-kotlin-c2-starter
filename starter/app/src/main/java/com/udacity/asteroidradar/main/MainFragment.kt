@@ -1,9 +1,17 @@
 package com.udacity.asteroidradar.main
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
@@ -13,12 +21,24 @@ class MainFragment : Fragment() {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
+
+        viewModel.picOfTheDayLiveData.observe(viewLifecycleOwner, Observer {
+            Picasso.with(requireContext())
+                .load(it.url)
+                .into(binding.activityMainImageOfTheDay)
+        })
+
+        binding.asteroidRecycler.adapter = AsteroidsAdapter { asteroid ->
+            findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
+        }
 
         setHasOptionsMenu(true)
 
