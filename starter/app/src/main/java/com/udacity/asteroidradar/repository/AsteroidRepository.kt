@@ -1,6 +1,6 @@
 package com.udacity.asteroidradar.repository
 
-import android.app.Application
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.Asteroid
@@ -45,8 +45,8 @@ class AsteroidRepository(private val asteroidDao: AsteroidDao, private val apiSe
     }
 
     companion object {
-        fun create(application: Application): AsteroidRepository {
-            val database = AsteroidDatabase.getInstance(application.applicationContext)
+        fun create(context: Context): AsteroidRepository {
+            val database = AsteroidDatabase.getInstance(context)
             val api = ApiClient.nasaApiService
             return AsteroidRepository(database.asteroidDao, api)
         }
