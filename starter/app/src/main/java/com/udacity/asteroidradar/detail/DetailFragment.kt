@@ -26,6 +26,7 @@ class DetailFragment : Fragment() {
             if (asteroid.isPotentiallyHazardous) getString(R.string.potentially_hazardous_asteroid_image)
             else getString(R.string.not_hazardous_asteroid_image)
 
+        binding.helpButton.contentDescription = getString(R.string.astronomica_unit_explanation)
         binding.helpButton.setOnClickListener {
             displayAstronomicalUnitExplanationDialog()
         }
