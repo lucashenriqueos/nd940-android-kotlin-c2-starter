@@ -18,7 +18,7 @@ import com.udacity.asteroidradar.databinding.FragmentMainBinding
 class MainFragment : Fragment() {
 
     private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
+        ViewModelProvider(this, MainViewModel.Factory(requireActivity().application)).get(MainViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -30,7 +30,12 @@ class MainFragment : Fragment() {
 
         binding.viewModel = viewModel
 
+        binding.activityMainImageOfTheDay.contentDescription = getString(R.string.this_is_nasa_s_picture_of_day_showing_nothing_yet)
+
         viewModel.picOfTheDayLiveData.observe(viewLifecycleOwner, Observer {
+            binding.activityMainImageOfTheDay.contentDescription = getString(R.string
+                .nasa_picture_of_day_content_description_format, it.title)
+
             Picasso.with(requireContext())
                 .load(it.url)
                 .into(binding.activityMainImageOfTheDay)
