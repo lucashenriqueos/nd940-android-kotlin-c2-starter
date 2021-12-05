@@ -1,7 +1,6 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,27 +12,14 @@ import com.udacity.asteroidradar.repository.AsteroidRepository
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val repository: AsteroidRepository) : ViewModel() {
-    private val _picOfTheDayLiveData = MutableLiveData<PictureOfDay>()
-    val picOfTheDayLiveData: LiveData<PictureOfDay>
-        get() = _picOfTheDayLiveData
-
     val asteroidsLiveData: LiveData<List<Asteroid>> = repository.asteroidsLiveData
+
+    val picOfTheDayLiveData: LiveData<PictureOfDay> = repository.pictureOfDayLiveData
 
     init {
         viewModelScope.launch {
             repository.fetchAsteroids()
-            getPicOfTheDay()
-        }
-    }
-
-    private fun getPicOfTheDay() {
-        viewModelScope.launch {
-            try {
-                val imgOfTheDay = repository.getPicOfTheDay()
-                _picOfTheDayLiveData.postValue(imgOfTheDay)
-            } catch (e: Exception) {
-                Log.e("MainViewModel", e.toString())
-            }
+            repository.fetchPicOfTheDay()
         }
     }
 

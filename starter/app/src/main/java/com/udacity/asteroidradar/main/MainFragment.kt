@@ -30,15 +30,20 @@ class MainFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        binding.activityMainImageOfTheDay.contentDescription = getString(R.string.this_is_nasa_s_picture_of_day_showing_nothing_yet)
+        binding.activityMainImageOfTheDay.contentDescription =
+            getString(R.string.this_is_nasa_s_picture_of_day_showing_nothing_yet)
 
-        viewModel.picOfTheDayLiveData.observe(viewLifecycleOwner, Observer {
-            binding.activityMainImageOfTheDay.contentDescription = getString(R.string
-                .nasa_picture_of_day_content_description_format, it.title)
+        viewModel.picOfTheDayLiveData.observe(viewLifecycleOwner, Observer { pic ->
+            pic?.let {
+                binding.activityMainImageOfTheDay.contentDescription = getString(
+                    R.string
+                        .nasa_picture_of_day_content_description_format, it.title
+                )
 
-            Picasso.with(requireContext())
-                .load(it.url)
-                .into(binding.activityMainImageOfTheDay)
+                Picasso.with(requireContext())
+                    .load(it.url)
+                    .into(binding.activityMainImageOfTheDay)
+            }
         })
 
         binding.asteroidRecycler.adapter = AsteroidsAdapter { asteroid ->

@@ -4,12 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.udacity.asteroidradar.Asteroid
 
-@Database(entities = [AsteroidEntity::class], version = 1)
+@Database(entities = [AsteroidEntity::class, PictureOfDayEntity::class], version = 1)
 abstract class AsteroidDatabase : RoomDatabase() {
 
     abstract val asteroidDao: AsteroidDao
+
+    abstract val pictureOfDayDao: PictureOfDayDao
 
     companion object {
         private lateinit var instance: AsteroidDatabase

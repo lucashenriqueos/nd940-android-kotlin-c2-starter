@@ -1,6 +1,5 @@
 package com.udacity.asteroidradar
 
-import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
@@ -16,6 +15,7 @@ class RefreshDataWork(
         val repository = AsteroidRepository.create(context)
         return try {
             repository.fetchAsteroids()
+            repository.fetchPicOfTheDay()
             Log.d("RefreshDataWork", "Refreshing data succeed")
             Result.success()
         } catch (e: Exception) {

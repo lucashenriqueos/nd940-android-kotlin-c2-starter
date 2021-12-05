@@ -38,7 +38,7 @@ class AsteroidRadarApplication: Application() {
             }
             .build()
 
-        val repeatingRequest = PeriodicWorkRequestBuilder<RefreshDataWork>(15, TimeUnit.MINUTES)
+        val repeatingRequest = PeriodicWorkRequestBuilder<RefreshDataWork>(1, TimeUnit.DAYS)
             .setConstraints(constraints)
             .build()
 

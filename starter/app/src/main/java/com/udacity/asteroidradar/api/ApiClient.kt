@@ -1,5 +1,6 @@
 package com.udacity.asteroidradar.api
 
+import android.util.Log
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -11,9 +12,13 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 
 object ApiClient {
 
-    private val moshi by lazy {
-        Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
+    private val httpClient by lazy {
+        OkHttpClient.Builder()
+            .addInterceptor {
+                Log.d("OkHttp", "Requesting for data")
+                Log.d("OkHttp", it.request().url().toString())
+                it.proceed(it.request())
+            }
             .build()
     }
 
@@ -22,7 +27,7 @@ object ApiClient {
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(MoshiConverterFactory.create())
-            .client(OkHttpClient())
+            .client(httpClient)
             .baseUrl(Constants.BASE_URL)
             .build()
     }
